@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using Coder.Scenarios;
+using System;
 using System.Threading;
 using WindowsInput;
-using WindowsInput.Native;
 
 namespace Coder
 {
@@ -18,15 +17,12 @@ namespace Coder
             Console.WriteLine("Press Enter to start");
             Console.ReadLine();
             Thread.Sleep(2000);
-            //NewFile();
-            //TypeText();
-            ScrollDownMelancholically();
 
-            //var scenarioManager = ScenarioManager.Create();
+            var scenarioManager = new ScenarioManager();
 
-            while(true)
+            while (true)
             {
-                //scenarioManager.GetNextScenario().Execute();
+                scenarioManager.GetNextScenario().Execute();
             }
 
             // ожидаемое максимальное время работы ~40 минут.
@@ -43,80 +39,5 @@ namespace Coder
             //8. редкие нажатия для поддержания соединения
 
         }
-
-        static void TypeText()
-        {
-            var files = GetAllFiles(@"C:\temp\");
-
-            foreach (var file in files)
-            {
-                ; string filename = file;
-                var random = new Random();
-                const int MinDelay = 60;
-                const int MaxDelay = 120;
-                const int MinLineDelay = 600;
-                const int MaxLineDelay = 1200;
-
-                if (!File.Exists(filename))
-                {
-                    return;
-                }
-
-                foreach (var line in File.ReadAllLines(filename))
-                {
-                    var curLine = line.Trim();
-                    Thread.Sleep(random.Next(MinLineDelay, MaxLineDelay));
-                    foreach (char ch in curLine)
-                    {
-                        if (ch == '\n')
-                        {
-                            continue;
-                        }
-                        Thread.Sleep(random.Next(MinDelay, MaxDelay));
-                        inputSimulator.Keyboard.TextEntry(ch);
-                        
-                    }
-                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.RETURN);
-                }
-
-
-                NewFile();
-            }
-        }
-
-        static void ScrollDownMelancholically()
-        {
-            var random = new Random();
-            const int MinScrollDelay = 30000;
-            const int MaxScrollDelay = 120000;
-            while (true)
-            {
-                inputSimulator.Mouse.VerticalScroll(-1);
-                Thread.Sleep(random.Next(MinScrollDelay, MaxScrollDelay));
-            }
-        }
-
-        static string[] GetAllFiles(string path)
-        {
-            var random = new Random();
-            var files = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
-            for (int i = 0; i < files.Length; i++)
-            {
-                var nf = random.Next(0, files.Length);
-                var temp = files[nf];
-                files[nf] = files[i];
-                files[i] = temp;
-            }
-            return files;
-        }
-
-        static void NewFile()
-        {
-            inputSimulator.Keyboard.KeyDown(VirtualKeyCode.LCONTROL);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_A);
-            inputSimulator.Keyboard.KeyUp(VirtualKeyCode.LCONTROL);
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.BACK);
-        }
-        
     }
 }
