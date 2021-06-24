@@ -18,8 +18,9 @@ namespace Coder
             Console.WriteLine("Press Enter to start");
             Console.ReadLine();
             Thread.Sleep(2000);
-            NewFile();
-            TypeText();
+            //NewFile();
+            //TypeText();
+            ScrollDownMelancholically();
 
             //var scenarioManager = ScenarioManager.Create();
 
@@ -80,6 +81,18 @@ namespace Coder
 
 
                 NewFile();
+            }
+        }
+
+        static void ScrollDownMelancholically()
+        {
+            var random = new Random();
+            const int MinScrollDelay = 30000;
+            const int MaxScrollDelay = 120000;
+            while (true)
+            {
+                inputSimulator.Mouse.VerticalScroll(-1);
+                Thread.Sleep(random.Next(MinScrollDelay, MaxScrollDelay));
             }
         }
 
