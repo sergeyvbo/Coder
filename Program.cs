@@ -26,20 +26,34 @@ namespace Coder
             {
                 ; string filename = file;
                 var random = new Random();
-                const int MinDelay = 10;
-                const int MaxDelay = 400;
+                const int MinDelay = 60;
+                const int MaxDelay = 120;
+                const int MinLineDelay = 600;
+                const int MaxLineDelay = 1200;
 
                 if (!File.Exists(filename))
                 {
                     return;
                 }
 
-                foreach (char ch in File.ReadAllText(filename))
+                foreach (var line in File.ReadAllLines(filename))
                 {
-                    Thread.Sleep(random.Next(MinDelay, MaxDelay));
-                    inputSimulator.Keyboard.TextEntry(ch);
-
+                    var curLine = line.Trim();
+                    Thread.Sleep(random.Next(MinLineDelay, MaxLineDelay));
+                    foreach (char ch in curLine)
+                    {
+                        if (ch == '\n')
+                        {
+                            continue;
+                        }
+                        Thread.Sleep(random.Next(MinDelay, MaxDelay));
+                        inputSimulator.Keyboard.TextEntry(ch);
+                        
+                    }
+                    inputSimulator.Keyboard.KeyPress(VirtualKeyCode.RETURN);
                 }
+
+
                 NewFile();
             }
         }
