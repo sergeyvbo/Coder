@@ -15,7 +15,7 @@ namespace Coder.Scenarios
             const int MaxDelay = 120000;
             while (true)
             {
-                _inputSimulator.Keyboard.KeyPress(VirtualKeyCode.CONTROL);
+                _inputSimulator.Keyboard.KeyPress(VirtualKeyCode.LCONTROL);
                 Thread.Sleep(random.Next(MinDelay, MaxDelay));
             }
         }
