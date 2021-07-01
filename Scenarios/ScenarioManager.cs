@@ -34,10 +34,11 @@ namespace Coder.Scenarios
         private Queue<string> InitScenarioQueue()
         {
             var queue = new Queue<string>();
-            var confScenario = _configuration["scenario"];
+            var confScenario = _configuration["defaultScenario"];
             if (confScenario is not null)
             {
                 queue.Enqueue(confScenario);
+                return queue;
             }
 
             foreach (var s in Shuffle(Scenarios))
